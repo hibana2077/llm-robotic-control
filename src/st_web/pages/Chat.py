@@ -1,6 +1,8 @@
 import streamlit as st
 import requests
-
+from langchain_core.output_parsers import JsonOutputParser
+import os
+import yaml
 """
 Workflow:
 語音輸入 website
@@ -15,3 +17,9 @@ Workflow:
     檢查是否達到目標
 確認和結束
 """
+
+
+st.title("Voice Robot Control")
+
+
+    
