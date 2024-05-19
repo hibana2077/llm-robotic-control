@@ -2,3 +2,4 @@ transformers
 fastapi
 requests
 pillow
+openai
