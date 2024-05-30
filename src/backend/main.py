@@ -2,7 +2,7 @@
 Author: hibana2077 hibana2077@gmail.com
 Date: 2024-05-17 21:46:09
 LastEditors: hibana2077 hibana2077@gmail.com
-LastEditTime: 2024-05-20 01:59:45
+LastEditTime: 2024-05-30 22:23:31
 FilePath: \llm-robotic-control\src\backend\main.py
 Description: 这是默认设置,请设置`customMade`, 打开koroFileHeader查看配置 进行设置: https://github.com/OBKoro1/koro1FileHeader/wiki/%E9%85%8D%E7%BD%AE
 '''
@@ -19,6 +19,8 @@ import io
 import base64
 import time
 import requests
+
+HOST = os.getenv("HOST", "127.0.0.1")
 
 # Constants
 
@@ -101,4 +103,4 @@ async def whisper(file: UploadFile = File(...)):
     return {"translate": result, "time": time.time() - ts}
 
 if __name__ == "__main__":
-    uvicorn.run(app, host="0.0.0.0", port=8000)
+    uvicorn.run(app, host=HOST, port=8000)
