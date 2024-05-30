@@ -1,0 +1,13 @@
+services:
+  fastapi:
+    build:
+      context: ./src/
+      dockerfile: Dockerfile
+    ports:
+      - "8000:8000"
+    volumes:
+      - ./src:/app
+    environment:
+      - HOST="0.0.0.0"
+    devices:
+      - "/dev/ttyACM0:/dev/ttyACM0"
