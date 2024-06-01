@@ -10,6 +10,7 @@ from langchain_core.pydantic_v1 import BaseModel, Field, validator
 from langchain.output_parsers.openai_tools import JsonOutputToolsParser
 from langchain_community.chat_models import ChatOllama
 from langchain_core.prompts import ChatPromptTemplate
+from cus_obj import Action, Task, RoboticArmOperation
 
 BACKEND_HOST = os.getenv("BACKEND_HOST", "localhost")
 OPENAI_MODEL = os.getenv("OPENAI_MODEL", "gpt-4o")
@@ -20,7 +21,8 @@ st.title("Robot Control Chat")
 def init_chat_history() -> ChatPromptTemplate:
     if 'chat_history' not in st.session_state:
         template = ChatPromptTemplate.from_messages([
-            ('system', "You are an AI Teaching Assistant, you need to help students with their questions based on the content of the textbooks."),
+            ('system', "You are an AI Assistant, helping the user to control a robotic arm."),
+            ('system', "You can help the user to control the robotic arm to complete a task."),90
         ])
         st.session_state['chat_history'] = template
     else:
@@ -40,7 +42,7 @@ if user_input:
         st.session_state['chat_history'] = chat_tmp
 
 if len(st.session_state['chat_history'].messages) == 1:
-    st.html("<p align='center'><h3>Start a conversation with the AI Teaching Assistant!</h3></p>")
+    st.html("<p align='center'><h3>Start a conversation with the AI Robot Control Assistant!</h3></p>")
 
 for message in st.session_state['chat_history'].messages:
     if isinstance(message, HumanMessage):
