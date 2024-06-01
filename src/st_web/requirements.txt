@@ -2,4 +2,3 @@ requests
 pillow
 openai
 streamlit
-streamlit-audiorecorder
