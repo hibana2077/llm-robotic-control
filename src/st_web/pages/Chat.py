@@ -22,7 +22,7 @@ def init_chat_history() -> ChatPromptTemplate:
     if 'chat_history' not in st.session_state:
         template = ChatPromptTemplate.from_messages([# Need to change the messages to guide LLM reactivity
             ('system', "You are an AI Assistant, helping the user to control a robotic arm."),
-            ('system', "You can help the user to control the robotic arm to complete a task."),
+            ('system', "User will tell you what to do, and you will use RoboticArmOperation tool to create a sehdule."),
         ])
         st.session_state['chat_history'] = template
     else:
@@ -30,9 +30,9 @@ def init_chat_history() -> ChatPromptTemplate:
     return template
 
 chat_tmp = init_chat_history()
-llm = ChatOpenAI(model=OPENAI_MODEL)
+llm = ChatOpenAI(model=OPENAI_MODEL, temperature=0).bind_tools([RoboticArmOperation, Task, Action])
 user_input = st.chat_input("Say something")
-chain = chat_tmp | llm | StrOutputParser()
+chain = chat_tmp | llm | JsonOutputToolsParser()
 
 if user_input:
     with st.status("Thinking..."):
