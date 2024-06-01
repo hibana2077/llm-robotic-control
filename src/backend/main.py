@@ -2,7 +2,7 @@
 Author: hibana2077 hibana2077@gmail.com
 Date: 2024-05-17 21:46:09
 LastEditors: hibana2077 hibana2077@gmail.com
-LastEditTime: 2024-05-30 22:23:31
+LastEditTime: 2024-06-01 16:34:05
 FilePath: \llm-robotic-control\src\backend\main.py
 Description: 这是默认设置,请设置`customMade`, 打开koroFileHeader查看配置 进行设置: https://github.com/OBKoro1/koro1FileHeader/wiki/%E9%85%8D%E7%BD%AE
 '''
@@ -12,6 +12,7 @@ from fastapi.middleware.cors import CORSMiddleware
 from transformers import AutoProcessor, PaliGemmaForConditionalGeneration
 from transformers import AutoModelForSpeechSeq2Seq, pipeline
 from PIL import Image
+import redis
 import torch
 import os
 import uvicorn
@@ -20,7 +21,10 @@ import base64
 import time
 import requests
 
+# Environment variables
+
 HOST = os.getenv("HOST", "127.0.0.1")
+REDIS_HOST = os.getenv("REDIS_HOST", "localhost")
 
 # Constants
 
@@ -29,6 +33,10 @@ WHISPER_MODEL_ID = "openai/whisper-large-v3"
 DEVICE = "cuda:0"
 DTYPE = torch.bfloat16
 WHISPER_DTYPE = torch.float16 if torch.cuda.is_available() else torch.float32
+
+# Connect to Redis
+
+redis_client = redis.Redis(host=REDIS_HOST, port=6379, db=0)
 
 # Load model
 
@@ -77,8 +85,10 @@ async def read_root():
     return {"Hello": "World"}
 
 @app.post("/generate")
-async def generate(text: str, image: str):# image in base64
+async def generate(data: dict):
     ts = time.time()
+    text:str = data["text"]
+    image:str = data["image"]
     # Convert base64 to image
     image = Image.open(io.BytesIO(base64.b64decode(image)))
     model_inputs = text_vision_processor(text=text, images=image, return_tensors="pt").to(text_vision_model.device)
@@ -101,6 +111,11 @@ async def whisper(file: UploadFile = File(...)):
     # remove temp file
     os.remove("temp.wav")
     return {"translate": result, "time": time.time() - ts}
+
+@app.post("/exp_data_recorder")
+async def exp_data_recorder(data: dict):
+    print(data)
+    return {"status": "success"}
 
 if __name__ == "__main__":
     uvicorn.run(app, host=HOST, port=8000)
