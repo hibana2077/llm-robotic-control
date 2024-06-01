@@ -20,9 +20,9 @@ st.title("Robot Control Chat")
 
 def init_chat_history() -> ChatPromptTemplate:
     if 'chat_history' not in st.session_state:
-        template = ChatPromptTemplate.from_messages([
+        template = ChatPromptTemplate.from_messages([# Need to change the messages to guide LLM reactivity
             ('system', "You are an AI Assistant, helping the user to control a robotic arm."),
-            ('system', "You can help the user to control the robotic arm to complete a task."),90
+            ('system', "You can help the user to control the robotic arm to complete a task."),
         ])
         st.session_state['chat_history'] = template
     else:
