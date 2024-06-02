@@ -51,6 +51,12 @@ for message in st.session_state['chat_history'].messages:
         with st.chat_message("assistant"):
             st.json(message.content)
     
-    if st.button("Submit Task"):
-        st.success("Task submitted")
-        # send task to backend
+if st.button("Submit Task"):
+    st.success("Task submitted")
+    # send task to backend (str format)
+    last_edit_task:str = chat_tmp.messages[-1].content
+    payload = {
+        "task": last_edit_task
+    }
+    response = requests.post(f"http://{BACKEND_HOST}/task", json=payload)
+    st.write(response.json())
