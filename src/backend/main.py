@@ -2,7 +2,7 @@
 Author: hibana2077 hibana2077@gmail.com
 Date: 2024-05-17 21:46:09
 LastEditors: hibana2077 hibana2077@gmail.com
-LastEditTime: 2024-06-01 16:34:05
+LastEditTime: 2024-06-02 22:45:59
 FilePath: \llm-robotic-control\src\backend\main.py
 Description: 这是默认设置,请设置`customMade`, 打开koroFileHeader查看配置 进行设置: https://github.com/OBKoro1/koro1FileHeader/wiki/%E9%85%8D%E7%BD%AE
 '''
@@ -116,6 +116,19 @@ async def whisper(file: UploadFile = File(...)):
 async def exp_data_recorder(data: dict):
     print(data)
     return {"status": "success"}
+
+@app.post("/submit_task")
+async def submit_task(data: dict):
+    task:str = data["task"]
+    # add to redis
+    redis_client.rpush("task_queue", task)
+    return {"status": "success"}
+
+@app.get("/get_tasks")
+async def get_tasks():
+    # get all tasks from redis
+    tasks = redis_client.lrange("task_queue", 0, -1)
+    return tasks
 
 if __name__ == "__main__":
     uvicorn.run(app, host=HOST, port=8000)
