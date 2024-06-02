@@ -1,6 +1,7 @@
 import streamlit as st
 import translators as ts
 import requests
+import json
 import os
 import yaml
 from langchain_openai import ChatOpenAI
@@ -14,7 +15,9 @@ from cus_obj import Action, Task, RoboticArmOperation
 
 BACKEND_HOST = os.getenv("BACKEND_HOST", "localhost")
 OPENAI_MODEL = os.getenv("OPENAI_MODEL", "gpt-4o")
-TRANSLATOR_PROVIDER = os.getenv("TRANSLATOR_PROVIDER", "google")
+OPENAI_TOKEN = os.getenv("OPENAI_TOKEN", "sk-")
+
+os.environ["OPENAI_API_KEY"] = OPENAI_TOKEN
 
 st.title("Robot Control Chat")
 
@@ -30,24 +33,25 @@ def init_chat_history() -> ChatPromptTemplate:
     return template
 
 chat_tmp = init_chat_history()
-llm = ChatOpenAI(model=OPENAI_MODEL, temperature=0).bind_tools([RoboticArmOperation, Task, Action])
+llm = ChatOpenAI(model=OPENAI_MODEL, temperature=0).bind_tools([RoboticArmOperation])
 user_input = st.chat_input("Say something")
 chain = chat_tmp | llm | JsonOutputToolsParser()
 
 if user_input:
     with st.status("Thinking..."):
-        chat_tmp.append(HumanMessage(ts.translate_text(user_input, translator=TRANSLATOR_PROVIDER, to_language="en")))
+        chat_tmp.append(HumanMessage(user_input))
         response = chain.invoke({})
-        chat_tmp.append(AIMessage(response))
+        chat_tmp.append(AIMessage(str(response)))
         st.session_state['chat_history'] = chat_tmp
-
-if len(st.session_state['chat_history'].messages) == 1:
-    st.html("<p align='center'><h3>Start a conversation with the AI Robot Control Assistant!</h3></p>")
 
 for message in st.session_state['chat_history'].messages:
     if isinstance(message, HumanMessage):
         with st.chat_message("user"):
-            st.write(ts.translate_text(message.content, translator=TRANSLATOR_PROVIDER, to_language="zh-TW"))
+            st.write(message.content)
     elif isinstance(message, AIMessage):
         with st.chat_message("assistant"):
-            st.write(ts.translate_text(message.content, translator=TRANSLATOR_PROVIDER, to_language="zh-TW"))
+            st.json(message.content)
+    
+    if st.button("Submit Task"):
+        st.success("Task submitted")
+        # send task to backend
