@@ -2,7 +2,7 @@
 Author: hibana2077 hibana2077@gmail.com
 Date: 2024-05-17 21:46:09
 LastEditors: hibana2077 hibana2077@gmail.com
-LastEditTime: 2024-06-02 23:32:21
+LastEditTime: 2024-06-02 23:54:39
 FilePath: \llm-robotic-control\src\backend\main.py
 Description: 这是默认设置,请设置`customMade`, 打开koroFileHeader查看配置 进行设置: https://github.com/OBKoro1/koro1FileHeader/wiki/%E9%85%8D%E7%BD%AE
 '''
@@ -17,6 +17,7 @@ import torch
 import os
 import uvicorn
 import io
+import json
 import base64
 import time
 import requests
@@ -136,6 +137,20 @@ async def remove_task(data: dict):
     # remove task from redis
     redis_client.lrem("task_queue", 0, task)
     return {"status": "success"}
+
+@app.post("/submit_action")
+async def submit_action(data: dict):
+    action:str = data["action"]
+    # add to redis
+    redis_client.rpush("action_queue", action)
+    return {"status": "success"}
+
+@app.get("/get_actions")
+async def get_actions():
+    # get next action from redis
+    action:str = redis_client.lpop("action_queue")
+    action_json = json.loads(action)
+    return action_json
 
 if __name__ == "__main__":
     uvicorn.run(app, host=HOST, port=8000)
