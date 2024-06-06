@@ -2,7 +2,7 @@
 Author: hibana2077 hibana2077@gmail.com
 Date: 2024-06-02 21:35:59
 LastEditors: hibana2077 hibana2077@gmail.com
-LastEditTime: 2024-06-04 10:09:34
+LastEditTime: 2024-06-06 23:07:47
 FilePath: \llm-robotic-control\src\st_web\pages\Task.py
 Description: 这是默认设置,请设置`customMade`, 打开koroFileHeader查看配置 进行设置: https://github.com/OBKoro1/koro1FileHeader/wiki/%E9%85%8D%E7%BD%AE
 '''
@@ -12,6 +12,7 @@ import requests
 import json
 import os
 import yaml
+import time
 from langchain_openai import ChatOpenAI
 from langchain_core.messages import HumanMessage, SystemMessage, AIMessage
 from langchain_core.output_parsers import JsonOutputParser,StrOutputParser
@@ -24,6 +25,17 @@ from cus_obj import Action, Task, RoboticArmOperation
 BACKEND_HOST = os.getenv("BACKEND_HOST", "localhost")
 OPENAI_MODEL = os.getenv("OPENAI_MODEL", "gpt-4o")
 OPENAI_TOKEN = os.getenv("OPENAI_TOKEN", "sk-")
+
+def need_human_intervention(current_scene, expected_scene):
+    # 根據實際情況定義何時需要人工干預
+    # 此處僅為示例
+    return current_scene != expected_scene
+
+def get_next_action_from_vision_model():
+    # 請求視覺模型提供下一步行動
+    # 此處需要實現與視覺模型的接口
+    next_action = requests.get(f"http://{BACKEND_HOST}/get_next_action").json()
+    return next_action
 
 # Load task from backend
 
@@ -53,9 +65,7 @@ if st.button("Execute Task"):
 
 task = json.loads(selected_task)[0]
 
-# According to the action in the task, send control signals to database and robotic arm will get the signals from database
-
-
+# According to the action in the task, send control signals to database and robotic arm, arm will get the signals from database
 
 # Wait for the robotic arm to complete the action (loop until the action is completed(sleep for 1 second))
 
@@ -70,3 +80,41 @@ task = json.loads(selected_task)[0]
 # If the scene is the same as expected_image_description, go to the next action
 
 # exit the action loop when all actions are completed
+
+# 根據任務中的行動指示，向數據庫發送控制信號
+for action in task['tasks']:
+    # 向數據庫發送控制信號（假設已實現的接口）
+    response = requests.post(f"http://{BACKEND_HOST}/send_signal", json=action['action'])
+    if response.status_code == 200:
+        st.success("Control signals sent to the robotic arm.")
+    else:
+        st.error("Failed to send control signals.")
+    
+    # 等待機械手臂完成動作
+    action_completed = False
+    while not action_completed:
+        time.sleep(1)
+        # 檢查機械手臂是否完成動作（此處需要與實際硬體接口對接）
+        status = requests.get(f"http://{BACKEND_HOST}/check_status").json()
+        if status['status'] == "completed":
+            action_completed = True
+    
+    # 使用視覺模型檢查動作後的場景
+    current_scene_description = requests.get(f"http://{BACKEND_HOST}/get_scene_description").json()['description']
+
+    # 如果場景與預期描述不符，決定是否需要人工幫助或進行其他行動
+    if current_scene_description != action['expected_image_description']:
+        if need_human_intervention(current_scene_description, action['expected_image_description']):
+            # 需要人工幫助
+            st.error("Human intervention required. Please assist.")
+            break
+        else:
+            # 需要更多行動，從視覺模型獲取下一個行動
+            next_action = get_next_action_from_vision_model()
+            continue  # 循環執行下一個行動
+    else:
+        st.success("Action completed as expected.")
+        continue  # 轉到下一個行動
+
+# 所有動作完成
+st.success("All actions have been completed.")

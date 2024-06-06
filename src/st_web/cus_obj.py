@@ -20,3 +20,36 @@ class RoboticArmOperation(BaseModel):
     """Overall goal and tasks for the robotic arm operation."""
     goal: str = Field(description="Overall goal of the operation")
     tasks: List[Task] = Field(description="List of tasks to be completed")
+
+'''
+JSON format for the task:
+{
+    "goal": "Pick up the cup",
+    "tasks": [
+        {
+            "action": {
+                "servo1": 0,
+                "servo2": 0,
+                "servo3": 0,
+                "servo4": 0,
+                "servo5": 0,
+                "servo6": 0
+            },
+            "check_point": "The cup is picked up",
+            "expected_image_description": "The cup is held by the robotic arm"
+        },
+        {
+            "action": {
+                "servo1": 0,
+                "servo2": 0,
+                "servo3": 0,
+                "servo4": 0,
+                "servo5": 0,
+                "servo6": 0
+            },
+            "check_point": "The cup is placed on the table",
+            "expected_image_description": "The cup is placed on the table"
+        }
+    ]
+}
+'''
