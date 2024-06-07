@@ -11,10 +11,6 @@ if img_file_buffer is not None:
     # To convert PIL Image to numpy array:
     img_array = np.array(img)
 
-    # Check the type of img_array:
-    # Should output: <class 'numpy.ndarray'>
-    st.write(type(img_array))
-
     # Check the shape of img_array:
     # Should output shape: (height, width, channels)
     st.write(img_array.shape)
