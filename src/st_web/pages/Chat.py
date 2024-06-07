@@ -2,7 +2,7 @@
 Author: hibana2077 hibana2077@gmail.com
 Date: 2024-05-08 14:05:18
 LastEditors: hibana2077 hibana2077@gmail.com
-LastEditTime: 2024-06-07 16:51:45
+LastEditTime: 2024-06-07 17:13:33
 FilePath: \llm-robotic-control\src\st_web\pages\Chat.py
 Description: 这是默认设置,请设置`customMade`, 打开koroFileHeader查看配置 进行设置: https://github.com/OBKoro1/koro1FileHeader/wiki/%E9%85%8D%E7%BD%AE
 '''
@@ -37,10 +37,10 @@ def init_chat_history() -> ChatPromptTemplate:
         #     ('system', "You are an AI Assistant, helping the user control a robotic arm."),
         #     ('system', "The user will instruct you, and you will use the RoboticArmOperation tool to create a schedule. Please break down the steps as much as possible."),
         # ])
-        template = ChatPromptTemplate.from_messages([
-            ('system', "You are an AI Assistant tasked with helping the user operate a robotic arm. Your role is to provide precise and sequential guidance."),
-            ('system', "When the user issues a command, your response should lay out the step-by-step actions necessary to execute it using the RoboticArmOperation tool. Ensure each step is clear and actionable."),
-        ])
+        # template = ChatPromptTemplate.from_messages([
+        #     ('system', "You are an AI Assistant tasked with helping the user operate a robotic arm. Your role is to provide precise and sequential guidance."),
+        #     ('system', "When the user issues a command, your response should lay out the step-by-step actions necessary to execute it using the RoboticArmOperation tool. Ensure each step is clear and actionable."),
+        # ])
         st.session_state['chat_history'] = template
     else:
         template = st.session_state['chat_history']
