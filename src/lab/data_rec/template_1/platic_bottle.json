@@ -1,0 +1,106 @@
+[
+    {
+      "args": {
+        "goal": "Move the orange bottle to the blue plate",
+        "tasks": [
+          {
+            "action": {
+              "servo1": 90,
+              "servo2": 45,
+              "servo3": 90,
+              "servo4": 90,
+              "servo5": 90,
+              "servo6": 0
+            },
+            "check_point": "Move to the initial position above the bottle",
+            "expected_image_description": "The robotic arm is positioned above the orange bottle."
+          },
+          {
+            "action": {
+              "servo1": 90,
+              "servo2": 90,
+              "servo3": 90,
+              "servo4": 90,
+              "servo5": 90,
+              "servo6": 0
+            },
+            "check_point": "Lower the arm to grasp the bottle",
+            "expected_image_description": "The robotic arm is lowered to the level of the orange bottle."
+          },
+          {
+            "action": {
+              "servo1": 90,
+              "servo2": 90,
+              "servo3": 90,
+              "servo4": 90,
+              "servo5": 90,
+              "servo6": 45
+            },
+            "check_point": "Close the gripper to hold the bottle",
+            "expected_image_description": "The robotic arm's gripper is closed, holding the orange bottle."
+          },
+          {
+            "action": {
+              "servo1": 90,
+              "servo2": 45,
+              "servo3": 90,
+              "servo4": 90,
+              "servo5": 90,
+              "servo6": 45
+            },
+            "check_point": "Lift the bottle",
+            "expected_image_description": "The robotic arm is lifted, holding the orange bottle."
+          },
+          {
+            "action": {
+              "servo1": 0,
+              "servo2": 45,
+              "servo3": 90,
+              "servo4": 90,
+              "servo5": 90,
+              "servo6": 45
+            },
+            "check_point": "Move to the position above the blue plate",
+            "expected_image_description": "The robotic arm is positioned above the blue plate, holding the orange bottle."
+          },
+          {
+            "action": {
+              "servo1": 0,
+              "servo2": 90,
+              "servo3": 90,
+              "servo4": 90,
+              "servo5": 90,
+              "servo6": 45
+            },
+            "check_point": "Lower the arm to place the bottle on the plate",
+            "expected_image_description": "The robotic arm is lowered to the level of the blue plate, holding the orange bottle."
+          },
+          {
+            "action": {
+              "servo1": 0,
+              "servo2": 90,
+              "servo3": 90,
+              "servo4": 90,
+              "servo5": 90,
+              "servo6": 0
+            },
+            "check_point": "Open the gripper to release the bottle",
+            "expected_image_description": "The robotic arm's gripper is open, releasing the orange bottle on the blue plate."
+          },
+          {
+            "action": {
+              "servo1": 0,
+              "servo2": 45,
+              "servo3": 90,
+              "servo4": 90,
+              "servo5": 90,
+              "servo6": 0
+            },
+            "check_point": "Lift the arm back to the initial position",
+            "expected_image_description": "The robotic arm is lifted back to the initial position."
+          }
+        ]
+      },
+      "type": "RoboticArmOperation"
+    }
+  ]

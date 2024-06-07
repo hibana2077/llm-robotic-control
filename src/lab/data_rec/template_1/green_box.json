@@ -1,0 +1,106 @@
+[
+    {
+      "args": {
+        "goal": "Grab the green box and place it on the blue area",
+        "tasks": [
+          {
+            "action": {
+              "servo1": 90,
+              "servo2": 45,
+              "servo3": 90,
+              "servo4": 0,
+              "servo5": 0,
+              "servo6": 0
+            },
+            "check_point": "Initial position",
+            "expected_image_description": "The robotic arm is in its initial position, ready to start the operation."
+          },
+          {
+            "action": {
+              "servo1": 90,
+              "servo2": 90,
+              "servo3": 45,
+              "servo4": 0,
+              "servo5": 0,
+              "servo6": 0
+            },
+            "check_point": "Move to above the green box",
+            "expected_image_description": "The robotic arm is positioned above the green box."
+          },
+          {
+            "action": {
+              "servo1": 90,
+              "servo2": 90,
+              "servo3": 45,
+              "servo4": 0,
+              "servo5": 0,
+              "servo6": 45
+            },
+            "check_point": "Grasp the green box",
+            "expected_image_description": "The robotic arm's gripper is closed around the green box."
+          },
+          {
+            "action": {
+              "servo1": 90,
+              "servo2": 45,
+              "servo3": 90,
+              "servo4": 0,
+              "servo5": 0,
+              "servo6": 45
+            },
+            "check_point": "Lift the green box",
+            "expected_image_description": "The robotic arm is holding the green box in the air."
+          },
+          {
+            "action": {
+              "servo1": 45,
+              "servo2": 45,
+              "servo3": 90,
+              "servo4": 0,
+              "servo5": 0,
+              "servo6": 45
+            },
+            "check_point": "Move to above the blue area",
+            "expected_image_description": "The robotic arm is positioned above the blue area with the green box."
+          },
+          {
+            "action": {
+              "servo1": 45,
+              "servo2": 90,
+              "servo3": 45,
+              "servo4": 0,
+              "servo5": 0,
+              "servo6": 45
+            },
+            "check_point": "Lower the green box onto the blue area",
+            "expected_image_description": "The robotic arm is lowering the green box onto the blue area."
+          },
+          {
+            "action": {
+              "servo1": 45,
+              "servo2": 90,
+              "servo3": 45,
+              "servo4": 0,
+              "servo5": 0,
+              "servo6": 0
+            },
+            "check_point": "Release the green box",
+            "expected_image_description": "The robotic arm has released the green box onto the blue area."
+          },
+          {
+            "action": {
+              "servo1": 90,
+              "servo2": 45,
+              "servo3": 90,
+              "servo4": 0,
+              "servo5": 0,
+              "servo6": 0
+            },
+            "check_point": "Return to initial position",
+            "expected_image_description": "The robotic arm has returned to its initial position."
+          }
+        ]
+      },
+      "type": "RoboticArmOperation"
+    }
+  ]

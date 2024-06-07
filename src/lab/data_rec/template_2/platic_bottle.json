@@ -1,0 +1,70 @@
+[
+    {
+      "args": {
+        "goal": "Move the plastic bottle to the blue area",
+        "tasks": [
+          {
+            "action": {
+              "servo1": 90,
+              "servo2": 45,
+              "servo3": 90,
+              "servo4": 90,
+              "servo5": 90,
+              "servo6": 90
+            },
+            "check_point": "Lift the bottle",
+            "expected_image_description": "The robotic arm has lifted the bottle off the ground."
+          },
+          {
+            "action": {
+              "servo1": 45,
+              "servo2": 45,
+              "servo3": 90,
+              "servo4": 90,
+              "servo5": 90,
+              "servo6": 90
+            },
+            "check_point": "Rotate towards the blue area",
+            "expected_image_description": "The robotic arm is rotated towards the blue area."
+          },
+          {
+            "action": {
+              "servo1": 45,
+              "servo2": 45,
+              "servo3": 45,
+              "servo4": 90,
+              "servo5": 90,
+              "servo6": 90
+            },
+            "check_point": "Move the arm forward",
+            "expected_image_description": "The robotic arm is extended towards the blue area."
+          },
+          {
+            "action": {
+              "servo1": 45,
+              "servo2": 90,
+              "servo3": 45,
+              "servo4": 90,
+              "servo5": 90,
+              "servo6": 90
+            },
+            "check_point": "Lower the bottle",
+            "expected_image_description": "The robotic arm has lowered the bottle onto the blue area."
+          },
+          {
+            "action": {
+              "servo1": 45,
+              "servo2": 90,
+              "servo3": 45,
+              "servo4": 90,
+              "servo5": 90,
+              "servo6": 0
+            },
+            "check_point": "Release the bottle",
+            "expected_image_description": "The robotic arm has released the bottle on the blue area."
+          }
+        ]
+      },
+      "type": "RoboticArmOperation"
+    }
+  ]
